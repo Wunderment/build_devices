@@ -9,14 +9,13 @@ if [ ! -f ../stock_os/current-stock-os.zip ]; then
         echo "Run \"../stock_os/get-stock-os.sh\" to retrieve it."
 else
 	# Cleanup any old updates that exist.
-	rm -rf ~/devices/$DEVICE/firmware/update
-	rm -rf ~/devices/$DEVICE/firmware/ota
-	cd ~/devices/$DEVICE/firmware
-	mkdir update
-	mkdir ota
+	rm -rf ~/devices/$DEVICE/firmware/update/*
 
 	# Change to the system_dump directory.
 	cd ~/devices/$DEVICE/firmware/ota
+
+	# Delete any previous extraction files, needs to be done as root.
+	rm -rf ~/devices/$DEVICE/firmware/ota/*
 
 	# Extract the system and vendor data from the LinageOS archive.
 	unzip ~/devices/$DEVICE/stock_os/current-stock-os.zip -d ~/devices/$DEVICE/firmware/ota -x *.dat
@@ -34,7 +33,9 @@ else
 	grep firmware-update ~/devices/$DEVICE/firmware/update/META-INF/com/google/android/updater-script >> ~/devices/$DEVICE/firmware/update/new-updater-script
 
 	# Cleanup.
-	rm -rf ~/devices/$DEVICE/firmware/ota
-	rm -rf ~/devices/$DEVICE/firmware/update
+	rm -rf ~/devices/$DEVICE/firmware/ota/*
+	rm ~/devices/$DEVICE/firmware/update/META-INF/com/google/android/updater-script
+	rm ~/devices/$DEVICE/firmware/update/META-INF/com/google/android/update-binary
+	rm -rf ~/devices/$DEVICE/firmware/update/META-INF/com/android
 
 fi
