@@ -9,11 +9,11 @@ if [ ! -f ~/devices/$DEVICE/stock_os/current-stock-os.zip ]; then
 	echo ""
 	echo "Run \"../stock_os/get-stock-os.sh\" to retreive it."
 else
-	# Make the system_dump directory.
-	cd ~/devices/$DEVICE/blobs
-	rm -rf ~/devices/$DEVICE/blobs/system_dump
-	mkdir system_dump
+	# Change to the system_dump directory.
 	cd ~/devices/$DEVICE/blobs/system_dump/
+
+	# Delete any previous extraction files.
+	rm -rf ~/devices/$DEVICE/blobs/system_dump/*
 
 	# Extract the system and vendor data from the LinageOS archive.
 	unzip -o ~/devices/$DEVICE/stock_os/current-stock-os.zip system.transfer.list system.new.dat vendor.transfer.list vendor.new.dat
@@ -23,17 +23,20 @@ else
 	python ~/bin/sdat2img.py vendor.transfer.list vendor.new.dat vendor.img
 
 	# Make some temporary directories to use.
-	mkdir system/
-	mkdir vendor/
-	mkdir combined/
+	mkdir system
+	mkdir vendor
+	mkdir combined
 
 	# Mount the system and vendor data.
 	#
 	# Note, these must appear in /etc/fstab otherwise we'd have to be root to moount them.  Use the following entires
 	# in fstab to allow a user to mount them:
 	#
-	mount system.img system/
-	mount vendor.img vendor/
+	# /home/WundermentOS/devices/dumpling/blobs/system_dump/system.img /home/WundermentOS/devices/dumpling/blobs/system_dump/system auto defaults,noauto,user 0 1
+	# /home/WundermentOS/devices/dumpling/blobs/system_dump/vendor.img /home/WundermentOS/devices/dumpling/blobs/system_dump/vendor auto defaults,noauto,user 0 1
+	#
+	mount system
+	mount vendor
 
 	# Since the extraction script expects everything to be in a single directory and img files are
 	# read only, copy everything over to a combined directory.  Do it as root to make sure we get everything.
@@ -45,7 +48,7 @@ else
 	rm -rf vendor
 	mkdir vendor/
 
-	# Copy the vendor files in to place, again as root to be sure.
+	# Copy the vendor files in to place, there will be some errors here as we're not doing it as root, but they don't matter.
 	cp -R /home/WundermentOS/devices/$DEVICE/blobs/system_dump/vendor/* /home/WundermentOS/devices/$DEVICE/blobs/system_dump/combined/vendor
 
 	# Now go and extract the blobs.
@@ -55,6 +58,6 @@ else
 	# Finally, let's do some cleanup.
 	umount ~/devices/$DEVICE/blobs/system_dump/system
 	umount ~/devices/$DEVICE/blobs/system_dump/vendor
-	rm -rf ~/devices/$DEVICE/blobs/system_dump
+	rm -rf ~/devices/$DEVICE/blobs/system_dump/*
 
 fi
