@@ -1,8 +1,15 @@
 #!/bin/bash
 
+# Get the device list and build types.
+source ~/.WundermentOS/devices.sh
+
 # Get the device name from the parent directory of this script's real path.
 DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 VENDOR=oneplus
+
+# Find out which version of LineageOS we're building for this device.
+WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
+LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
 if [ ! -f ~/devices/$DEVICE/stock_os/current-stock-os.zip ]; then
     	echo "Stock OS not found!"
@@ -19,7 +26,7 @@ else
 	unzip -o ~/devices/$DEVICE/stock_os/current-stock-os.zip payload.bin
 
 	# Extract img files so that they can be mounted.
-	python ~/android/lineage/lineage/scripts/update-payload-extractor/extract.py payload.bin --partitions system vendor --output_dir ./
+	python ~/android/lineage-$LOS_BUILD_VERSION/lineage/scripts/update-payload-extractor/extract.py payload.bin --partitions system vendor --output_dir ./
 
 	# Make some temporary directories to use.
 	mkdir system
@@ -33,6 +40,10 @@ else
 	#
 	# /home/WundermentOS/devices/fajita/blobs/system_dump/system.img /home/WundermentOS/devices/fajita/blobs/system_dump/system auto defaults,noauto,user 0 1
 	# /home/WundermentOS/devices/fajita/blobs/system_dump/vendor.img /home/WundermentOS/devices/fajita/blobs/system_dump/vendor auto defaults,noauto,user 0 1
+	#
+	# You must also add the following line to your /etc/group file so the user has the right permissions to read the files:
+	#
+	# oneplus:x:2000:WundermentOS
 	#
 	mount system
 	mount vendor
@@ -51,12 +62,19 @@ else
 	cp -R /home/WundermentOS/devices/$DEVICE/blobs/system_dump/vendor/* /home/WundermentOS/devices/$DEVICE/blobs/system_dump/combined/vendor
 
 	# Now go and extract the blobs.
-	cd ~/android/lineage/device/$VENDOR/$DEVICE
+	#
+	# Note: extract-files is going to complain about two missing .so files, libaptXHD_encoder.so/libaptX_encoder.so.
+	#       These files can be found:
+	#
+	#	https://github.com/TheMuppets/proprietary_vendor_oneplus/tree/lineage-17.1/sdm845-common/proprietary/product/lib64
+	#
+	#	And added manually to the vendor/oneplus/sdm845-common/proprietary/product/lib64 directory.
+	#
+	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE
 	./extract-files.sh ~/devices/$DEVICE/blobs/system_dump/
 
 	# Finally, let's do some cleanup.
 	umount ~/devices/$DEVICE/blobs/system_dump/system
 	umount ~/devices/$DEVICE/blobs/system_dump/vendor
         rm -rf ~/devices/$DEVICE/blobs/system_dump/*
-
 fi
