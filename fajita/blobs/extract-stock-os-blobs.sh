@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# For the time being, don't update the blobs as there is no single source for them.
+exit
+
 # Get the device list and build types.
 source ~/.WundermentOS/devices.sh
 
@@ -69,6 +72,11 @@ else
 	#	https://github.com/TheMuppets/proprietary_vendor_oneplus/tree/lineage-17.1/sdm845-common/proprietary/product/lib64
 	#
 	#	And added manually to the vendor/oneplus/sdm845-common/proprietary/product/lib64 directory.
+	#
+	#	These files come from the offcial Google Pixel Android images for the Pixel 3 XL (crosshatch)
+	#	and can be found here:
+	#
+	#	https://developers.google.com/android/ota#crosshatch
 	#
 	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE
 	./extract-files.sh ~/devices/$DEVICE/blobs/system_dump/
