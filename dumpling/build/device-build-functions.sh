@@ -1,5 +1,9 @@
 #!/bin/bash
 
+function build_wos {
+	common_build_wos
+}
+
 function sign_wos {
 	echo "Start signing process for $DEVICE..."
 
@@ -12,22 +16,6 @@ function sign_wos {
 
 	# Call the common tasks of creating the target files package from the global build functions.
 	sign_wos_target_package
-
-	# Create the md5 checksum file for the release
-	echo "Create the md5 checksum..."
-	md5sum ~/releases/ota/$PKGNAME.zip > ~/releases/ota/$PKGNAME.zip.md5sum
-
-	# Grab a copy of the build.prop file
-	echo "Store the build.prop file..."
-	cp $OUT/system/build.prop ~/releases/ota/$PKGNAME.zip.prop
-
-	# Cleanup
-	echo "Store signed target files for future incremental updates..."
-	cp signed-target_files.zip ~/releases/signed_files/signed-target_files-$DEVICE-$TODAY.zip
-
-	exit
-
-	# !!!!!!!! EVERYTHING FROM HERE DOWN NEEDS TO BE REPLACED FOR THE PAYLOAD.BIN IN FAJITA !!!!!!!!
 
 	# Add RADIO and firmware to the update package.
 	echo "Add RADIO and FIRMWARE to the update package..."
@@ -67,15 +55,15 @@ function sign_wos {
 
 	# Get the recovery image from the signed target files so we have the right signing keys in it.
 	# Use -j to drop the path as we don't need it.
-	cd ~/android/lineage
-	rm -f ~/android/lineage/recovery.img
+	cd ~/android/lineage-$LOS_BUILD_VERSION
+	rm -f ~/android/lineage-$LOS_BUILD_VERSION/recovery.img
 	unzip -j signed-target_files.zip IMAGES/recovery.img
 
 	# Add in Lineage recovery.  Use -j to drop the path as the img should be in the root of the zip.
-	zip -urj ~/releases/ota/$PKGNAME.zip ~/android/lineage/recovery.img
+	zip -urj ~/releases/ota/$PKGNAME.zip ~/android/lineage-$LOS_BUILD_VERSION/recovery.img
 
 	# Clean up.
-	rm -f ~/android/lineage/recovery.img
+	rm -f ~/android/lineage-$LOS_BUILD_VERSION/recovery.img
 
 	# Re-sign the release zip after we've updated it.
 	echo "Resign the release package..."
@@ -85,7 +73,7 @@ function sign_wos {
 	mv $PKGNAME-resigned.zip $PKGNAME.zip
 
 	# Take us back to the root.
-	cd ~/android/lineage
+	cd ~/android/lineage-$LOS_BUILD_VERSION
 
 	# Create the md5 checksum file for the release
 	echo "Create the md5 checksum..."

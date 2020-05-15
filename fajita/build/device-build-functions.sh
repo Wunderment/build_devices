@@ -1,5 +1,9 @@
 #!/bin/bash
 
+function build_wos {
+	common_build_wos
+}
+
 function sign_wos {
 	echo "Start signing process for $DEVICE..."
 
@@ -12,6 +16,22 @@ function sign_wos {
 
 	# Call the common tasks of creating the target files package from the global build functions.
 	sign_wos_target_package
+
+	# Create the md5 checksum file for the release
+	echo "Create the md5 checksum..."
+	md5sum ~/releases/ota/$PKGNAME.zip > ~/releases/ota/$PKGNAME.zip.md5sum
+
+	# Grab a copy of the build.prop file
+	echo "Store the build.prop file..."
+	cp $OUT/system/build.prop ~/releases/ota/$PKGNAME.zip.prop
+
+	# Cleanup
+	echo "Store signed target files for future incremental updates..."
+	cp signed-target_files.zip ~/releases/signed_files/signed-target_files-$DEVICE-$TODAY.zip
+
+	return
+
+	# !!!!!!!! EVERYTHING FROM HERE DOWN NEEDS TO BE REPLACED FOR THE PAYLOAD.BIN IN FAJITA !!!!!!!!
 
 	# Add RADIO and firmware to the update package.
 	echo "Add RADIO and FIRMWARE to the update package..."
