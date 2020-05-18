@@ -6,7 +6,7 @@ function build_wos {
 	echo "Allow permissive mode for fajita's INIT..."
 	WOS_CWD=$(pwd)
 	cd ~/android/lineage-$LOS_BUILD_VERSION/system/core/init
-	sed -i 's/"-DUSER_MODE_LINUX"],/\n                "-DUSER_MODE_LINUX",\n                "-UALLOW_PERMISSIVE_SELINUX",\n                "-DALLOW_PERMISSIVE_SELINUX=1",\n            ],/' Android.bp
+	sed -i 's/"-DALLOW_PERMISSIVE_SELINUX=0"/"-DALLOW_PERMISSIVE_SELINUX=1"/' Android.bp
 	cd $WOS_CWD
 
 	# Do the build.
