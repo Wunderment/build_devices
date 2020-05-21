@@ -1,8 +1,22 @@
 #!/bin/bash
 
+# Source the device list.
+source ~/.WundermentOS/devices.sh
+
 # Get the device name from the parent directory of this script's real path.
 DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 VENDOR=oneplus
+
+# A device name may have a special case where we're building multiple versios, like for LOS 16
+# and 17.  In these cases an extra modifier on the device name is added that starts with a '_'
+# so for example dumpling_17 to indicate to build LOS 17 for dumpling.  In these cases we need
+# to leave the modifier on $DEVICE so logs and other commands are executed in the right directory
+# but for the acutal LOS build, we need to strip it off.  So do so now.
+LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
+
+# Find out which version of LinageOS we're going to build for this device.
+WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
+LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
 if [ ! -f ~/devices/$DEVICE/stock_os/current-stock-os.zip ]; then
     	echo "Stock OS not found!"
@@ -52,7 +66,7 @@ else
 	cp -R /home/WundermentOS/devices/$DEVICE/blobs/system_dump/vendor/* /home/WundermentOS/devices/$DEVICE/blobs/system_dump/combined/vendor
 
 	# Now go and extract the blobs.
-	cd ~/android/lineage/device/$VENDOR/$DEVICE
+	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE
 	./extract-files.sh ~/devices/$DEVICE/blobs/system_dump/
 
 	# Finally, let's do some cleanup.

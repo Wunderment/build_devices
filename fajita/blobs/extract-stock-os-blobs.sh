@@ -10,7 +10,14 @@ source ~/.WundermentOS/devices.sh
 DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 VENDOR=oneplus
 
-# Find out which version of LineageOS we're building for this device.
+# A device name may have a special case where we're building multiple versios, like for LOS 16
+# and 17.  In these cases an extra modifier on the device name is added that starts with a '_'
+# so for example dumpling_17 to indicate to build LOS 17 for dumpling.  In these cases we need
+# to leave the modifier on $DEVICE so logs and other commands are executed in the right directory
+# but for the acutal LOS build, we need to strip it off.  So do so now.
+LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
+
+# Find out which version of LinageOS we're going to build for this device.
 WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 LOS_BUILD_VERSION=${!WOS_BUILD_VAR}
 
@@ -78,11 +85,11 @@ else
 	#
 	#	https://developers.google.com/android/ota#crosshatch
 	#
-	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE
+	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE
 	./extract-files.sh ~/devices/$DEVICE/blobs/system_dump/
 
 	# Finally, let's do some cleanup.
 	umount ~/devices/$DEVICE/blobs/system_dump/system
 	umount ~/devices/$DEVICE/blobs/system_dump/vendor
-        rm -rf ~/devices/$DEVICE/blobs/system_dump/*
+	rm -rf ~/devices/$DEVICE/blobs/system_dump/*
 fi
