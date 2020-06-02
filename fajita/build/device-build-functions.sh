@@ -1,6 +1,14 @@
 #!/bin/bash
 
 function build_wos {
+	# For Fajita we need to add the prebuilt vendor.img to the build system, do that now.
+	# First check to see if we've already one it.
+	if ! grep vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk; then
+		echo "" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
+		echo "BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/fajita/blobs/vendor.img" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
+		echo "AB_OTA_PARTITIONS += vendor" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
