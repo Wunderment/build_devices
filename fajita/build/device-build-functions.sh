@@ -1,22 +1,8 @@
 #!/bin/bash
 
 function build_wos {
-	# Fajita has an issue with LOS Recovery when built with user mode, need to allow init to
-	# run in permissive move, so let's do that before the build.
-	echo "Allow permissive mode for fajita's INIT..."
-	WOS_CWD=$(pwd)
-	cd ~/android/lineage-$LOS_BUILD_VERSION/system/core/init
-	sed -i 's/"-DALLOW_PERMISSIVE_SELINUX=0"/"-DALLOW_PERMISSIVE_SELINUX=1"/' Android.bp
-	cd $WOS_CWD
-
-	# Do the build.
+	# Build WOS.
 	common_build_wos
-
-	# Revert the change as other devcies don't need it.
-	echo "Revert permissive mode for INIT..."
-	cd ~/android/lineage-$LOS_BUILD_VERSION/system/core/init
-	git checkout HEAD Android.bp
-	cd $WOS_CWD
 }
 
 function sign_wos {
