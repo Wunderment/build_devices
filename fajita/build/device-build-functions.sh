@@ -15,8 +15,11 @@ function sign_wos {
 	source build/envsetup.sh
 	croot
 
-	# Call the common tasks of creating the target files package from the global build functions.
-	sign_wos_target_package
+	# Use the pre-built version of the vendor img during signing.
+	sign_wos_target_apks_vendor_prebuilt
+
+	# Then generate the OTA as usual.
+	sign_wos_target_files
 
 	# Create the md5 checksum file for the release
 	echo "Create the md5 checksum..."
