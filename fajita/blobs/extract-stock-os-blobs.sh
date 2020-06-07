@@ -23,8 +23,25 @@ if [ ! -f ~/devices/$DEVICE/stock_os/current-stock-os.zip ]; then
 	echo ""
 	echo "Run \"../stock_os/get-stock-os.sh\" to retreive it."
 else
-    # Delete any previous extraction files.
-    rm -rf ~/devices/$DEVICE/blobs/images/*
+	cd ~/devices/$DEVICE/blobs
+
+	# Create the image folder if required.  Stores the final img files to be added to the OTA.
+	if [ ! -d "images" ]; then
+		cd images
+	fi
+
+	# Create the image_raw folder if required.  Stores the raw img files extracted from OOS.
+	if [ ! -d "images_raw" ]; then
+		cd images_raw
+	fi
+
+	# Create the image_sparse folder if required.  Stores the converted raw to sparse foramt img files.
+	if [ ! -d "images_sparse" ]; then
+		cd images_sparse
+	fi
+
+	# Delete any previous extraction files.
+	rm -rf ~/devices/$DEVICE/blobs/images/*
 
 	# Overall for proprietary blobs we're using TheMuppets, but we still need some of the stock partitions, so get them now.
 	# Make sure we're in the blobs directory to start.
@@ -34,10 +51,10 @@ else
 	unzip -o ~/devices/$DEVICE/stock_os/current-stock-os.zip payload.bin
 
 	# Extract img files so that they can be mounted.
-	python ~/android/lineage-$LOS_BUILD_VERSION/lineage/scripts/update-payload-extractor/extract.py --output_dir ./images payload.bin
+	python ~/android/lineage-$LOS_BUILD_VERSION/lineage/scripts/update-payload-extractor/extract.py --output_dir ./images_raw payload.bin
 
 	# Change in to the output directory.
-	cd images
+	cd images_raw
 
 	# Get rid of the images we don't need.
 	rm system.img
@@ -45,25 +62,24 @@ else
 	rm boot.img
 	rm dtbo.img
 
-	# The image files needs to be in sparse format so convert them.
-	for IMGNAME in *.img; do
-		# Get the basename of the image file.
-		IMGBASE=$(basename -s .img $IMGNAME)
+	# Copy vendor.img over to the sparse folder and convert it.
+	cp vendor.img ../images_sparse/vendor.raw
+	cd ../images_sparse
+	img2simg vendor.raw vendor.img
+	rm vendor.raw
 
-		img2simg $IMGBASE.img $IMGBASE.simg
+	# Change to the images directory.
+	cd ~/devices/$DEVICE/blobs/images
 
-		# Replace the old ext4 format image with the new sparse format image if they exist.
-		if [ -f $IMGBASE.simg ]; then
-			rm $IMGBASE.img
-			mv $IMGBASE.simg $IMGBASE.img
-		fi
-	done
+	# Copy over the raw images from OOS.
+	cp ~/devices/$DEVICE/blobs/images_raw/*.img .
+
+	# Remove vendor.img as we'll pull a version with the proper hashtree after the build is run.
+	rm vendor.img
 
 	# Return to the blobs directory.
 	cd ~/devices/$DEVICE/blobs/
 
 	# We don't need payload.bin anymore.
 	rm payload.bin
-
-	# All done... for now.
 fi
