@@ -13,7 +13,12 @@ function build_wos {
 		echo "AB_OTA_PARTITIONS += vendor" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
 		echo "BOARD_AVB_ALGORITHM := SHA256_RSA2048" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
 		echo "BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.x509.pem" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
+	fi
 
+	# We need to remove the flag that disables the partition verification during boot if it hasn't been already
+	# in the sdm845 common code.
+	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sdm845/BoardConfigCommon.mk; then
+		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flag 2/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flag 2/' ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sdm845-common/BoardConfigCommon.mk
 	fi
 
 	# Build WOS.
