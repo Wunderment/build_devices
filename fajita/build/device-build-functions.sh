@@ -3,7 +3,7 @@
 function build_wos {
 	# For Fajita we need to add the prebuilt vendor.img to the build system, do that now.
 	# First check to see if we've already one it.
-	if ! grep vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk; then
+	if ! grep vendor.img ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk > /dev/null; then
 		echo "" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
 		
 		# We're using the sparse image here otherwise LOS will try and use the SEPolicy files from the ext
@@ -17,7 +17,7 @@ function build_wos {
 
 	# We need to remove the flag that disables the partition verification during boot if it hasn't been already
 	# in the sdm845 common code.
-	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sdm845/BoardConfigCommon.mk; then
+	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sdm845/BoardConfigCommon.mk > /dev/null; then
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flag 2/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flag 2/' ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sdm845-common/BoardConfigCommon.mk
 	fi
 
