@@ -74,4 +74,12 @@ else
 	umount ~/devices/$DEVICE/blobs/system_dump/vendor
 	rm -rf ~/devices/$DEVICE/blobs/system_dump/*
 
+	# Now update the VENDOR_SECURITY_PATCH setting for the build.
+	# For dumpling this is in device/oneplus/msm8998-common/common.mk
+	# The line to replace looks like:
+	#	"    ro.lineage.build.vendor_security_patch=2020-02-01"
+	#
+	VENDOR_DATE=$(date +"%Y-%m-01")
+	sed -i "s/    ro.lineage.build.vendor_security_patch=.*/    ro.lineage.build.vendor_security_patch=$VENDOR_DATE/" ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/msm8998-common/common.mk
+
 fi
