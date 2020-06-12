@@ -62,12 +62,6 @@ else
 	rm boot.img
 	rm dtbo.img
 
-	# Copy vendor.img over to the sparse folder and convert it.
-	cp vendor.img ../images_sparse/vendor.raw
-	cd ../images_sparse
-	img2simg vendor.raw vendor.img
-	rm vendor.raw
-
 	# Change to the images directory.
 	cd ~/devices/$DEVICE/blobs/images
 
