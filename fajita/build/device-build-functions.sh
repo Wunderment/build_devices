@@ -8,7 +8,7 @@ function build_wos {
 		
 		# We're using the sparse image here otherwise LOS will try and use the SEPolicy files from the ext
 		# version and throw policy errors as they are from OOS.
-		echo "BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/fajita/blobs/images_sparse/vendor.img" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
+		echo "BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/fajita/blobs/images_raw/vendor.img" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
 		
 		echo "AB_OTA_PARTITIONS += vendor" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
 		echo "BOARD_AVB_ALGORITHM := SHA256_RSA2048" > ~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/fajita/BoardConfig.mk
