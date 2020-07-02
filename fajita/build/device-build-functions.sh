@@ -4,10 +4,10 @@ VENDOR=oneplus
 
 function build_wos {
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/BoardConfig.mk
-	# For fajita we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
+	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
 	if ! grep vendor.img $BCFILE > /dev/null; then
-		cat ~/devices/$DEVICE/build/board-config-additions.txt > $BCFILE
+		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
 
 	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/BoardConfigCommon.mk
