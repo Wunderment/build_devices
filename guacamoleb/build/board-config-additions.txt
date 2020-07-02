@@ -4,7 +4,7 @@ BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/guacamoleb/blobs/images
 AB_OTA_PARTITIONS += vendor
 
 # Set the AVB key and hash algorithm.
-BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.x509.pem
+BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.key
 BOARD_AVB_ALGORITHM := SHA256_RSA2048
 
 # Include the rest of the prebuilt partitions.
