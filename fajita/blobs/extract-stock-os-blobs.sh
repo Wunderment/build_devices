@@ -52,10 +52,15 @@ else
 	cd images_raw
 
 	# Get rid of the images we don't need.
+	# 	system/vbmeta/boot/dtbo will be generated during build
+	#	india/reserve/oem_stanvbk can't be written by lineage recovery
 	rm system.img
 	rm vbmeta.img
 	rm boot.img
 	rm dtbo.img
+	rm india.img
+	rm reserve.img
+	rm oem_stanvbk.img
 
 	# Change to the images directory.
 	cd ~/devices/$DEVICE/blobs/images
