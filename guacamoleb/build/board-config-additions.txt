@@ -1,0 +1,13 @@
+
+# Add vendor image to the OTA and vbmeta hashtree.
+BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/guacamoleb/blobs/images_raw/vendor.img
+AB_OTA_PARTITIONS += vendor
+
+# Set the AVB key and hash algorithm.
+BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.x509.pem
+BOARD_AVB_ALGORITHM := SHA256_RSA2048
+
+# Include the rest of the prebuilt partitions.
+BOARD_PREBUILT_IMAGES := abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
+BOARD_PREBUILT_IMAGES_PATH := /home/WundermentOS/devices/guacamoleb/blobs/images
+AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
