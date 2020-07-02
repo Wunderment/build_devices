@@ -35,11 +35,6 @@ else
 		cd images_raw
 	fi
 
-	# Create the image_sparse folder if required.  Stores the converted raw to sparse foramt img files.
-	if [ ! -d "images_sparse" ]; then
-		cd images_sparse
-	fi
-
 	# Delete any previous extraction files.
 	rm -rf ~/devices/$DEVICE/blobs/images/*
 
