@@ -10,7 +10,7 @@ function build_wos {
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
 
-	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/BoardConfigCommon.mk
+	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/BoardConfigCommon.mk
 	# We need to remove the flag that disables the partition verification during boot if it hasn't been already
 	# in the sdm845 common code.
 	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" $BCCFILE > /dev/null; then
