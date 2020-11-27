@@ -37,6 +37,7 @@ else
 
 	# Delete any previous extraction files.
 	rm -rf ~/devices/$DEVICE/blobs/images/*
+	rm -rf ~/devices/$DEVICE/blobs/images_raw/*
 
 	# Overall for proprietary blobs we're using TheMuppets, but we still need some of the stock partitions, so get them now.
 	# Make sure we're in the blobs directory to start.
