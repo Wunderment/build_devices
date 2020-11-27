@@ -1,6 +1,6 @@
 <?php
 // Pull the current stats from OnePlus.com and decode the json response.
-$string = file_get_contents( 'oneplus-6t.json' );
+$string = file_get_contents( 'oneplus.json' );
 $json = json_decode( $string, true );
 
 // Loop thorugh the data.
