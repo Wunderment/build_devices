@@ -37,17 +37,8 @@ function sign_wos {
 	# Then generate the OTA as usual.
 	sign_wos_target_files
 
-	# Create the md5 checksum file for the release
-	echo "Create the md5 checksum..."
-	md5sum ~/releases/ota/$PKGNAME.zip > ~/releases/ota/$PKGNAME.zip.md5sum
-
-	# Grab a copy of the build.prop file
-	echo "Store the build.prop file..."
-	cp $OUT/system/build.prop ~/releases/ota/$PKGNAME.zip.prop
-
-	# Cleanup
-	echo "Store signed target files for future incremental updates..."
-	cp signed-target_files.zip ~/releases/signed_files/signed-target_files-$DEVICE-$TODAY.zip
+	# Create the MD5 checksum file, copy the build prop file and cleanup the target_files zip.
+	checksum_buildprop_cleanup
 
 	echo "Signing process complete for $DEVICE!"
 }
