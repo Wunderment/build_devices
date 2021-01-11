@@ -8,6 +8,9 @@ if [ ! -f ../stock_os/current-stock-os.zip ]; then
 	echo ""
         echo "Run \"../stock_os/get-stock-os.sh\" to retrieve it."
 else
+	# Just exit as for LOS 17.1 we use 10.0.1 firmware that is not yet available on the OnePlus sight.
+	exit
+
 	# Cleanup any old updates that exist.
 	rm -rf ~/devices/$DEVICE/firmware/update/*
 
