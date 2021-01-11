@@ -12,5 +12,5 @@ BOARD_PREBUILT_IMAGES := abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed f
 BOARD_PREBUILT_IMAGES_PATH := /home/WundermentOS/devices/fajita/blobs/images
 
 # Below is the full partition list, but some fail to write so exclude them for now: dsp, modem, qupfw, tz
-#AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
-AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg fw_4j1ed fw_4u1ea hyp keymaster LOGO storsec xbl xbl_config
+AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
+#AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg fw_4j1ed fw_4u1ea hyp keymaster LOGO storsec xbl xbl_config
