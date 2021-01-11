@@ -27,12 +27,12 @@ else
 
 	# Create the image folder if required.  Stores the final img files to be added to the OTA.
 	if [ ! -d "images" ]; then
-		cd images
+		mkdir images
 	fi
 
 	# Create the image_raw folder if required.  Stores the raw img files extracted from OOS.
 	if [ ! -d "images_raw" ]; then
-		cd images_raw
+		mkdir images_raw
 	fi
 
 	# Delete any previous extraction files.
