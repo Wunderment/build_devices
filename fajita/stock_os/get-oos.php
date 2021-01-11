@@ -18,7 +18,7 @@ $last_release = intval( file_get_contents( $last_filename ) );
 // Check if it's different from the value that OnePlus.com just returned to us.
 if( $current_release[ 'versionReleaseTime' ] !== $last_release ) {
 	// If so, download the new release.
-	echo 'New release found:' . PHP_EOL;
+	echo 'New release found: ' . $current_release[ 'versionNo' ] . PHP_EOL;
 
 	$cmd = 'wget -O ~/devices/fajita/stock_os/current-stock-os.zip ' . escapeshellarg( $current_release[ 'versionLink' ] );
 
