@@ -27,7 +27,7 @@ function sign_wos {
 
 	# Cleanup
 	echo "Store signed target files for future incremental updates..."
-	cp signed-target_files.zip ~/releases/signed_files/signed-target_files-$DEVICE-$TODAY.zip
+	cp signed-target_files.zip ~/releases/signed_files/$LOS_DEVICE/signed-target_files-$DEVICE-$TODAY.zip
 
 	echo "Signing process complete for $DEVICE!"
 }
