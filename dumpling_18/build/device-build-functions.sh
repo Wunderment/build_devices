@@ -1,6 +1,20 @@
 #!/bin/bash
 
 function build_wos {
+	SEFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/msm8998-common/sepolicy/vendor/hal_camera_default.te
+	# For this device we need to remove a debugging permission for our user build.
+	# First check to see if we've already done it.
+	if ! grep "#get_prop(hal_camera_default, sensors_dbg_prop)" $SEFILE > /dev/null; then
+		sed -i 's/^get_prop(hal_camera_default, sensors_dbg_prop)/#get_prop(hal_camera_default, sensors_dbg_prop)/' $SEFILE
+	fi
+
+	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/msm8998-common/BoardConfigCommon.mk
+	# For this device we need to disable AVB in the makefile so when we sign it doesn't throw an error.
+	# First check to see if we've already done it.
+	if ! grep "BOARD_AVB_ENABLE := false" $BCCFILE > /dev/null; then
+		sed -i 's/^# SELinux/# Verified Boot\nBOARD_AVB_ENABLE := false\n\n# SELinux/' $BCCFILE
+	fi
+
 	common_build_wos
 }
 
