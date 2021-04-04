@@ -8,9 +8,7 @@ BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.key
 BOARD_AVB_ALGORITHM := SHA256_RSA2048
 
 # Include the rest of the prebuilt partitions.
+# The following three images are exclude as lineage recovery doesn't seem to be able to flash them: india.img, reserve.img, oem_stanvbk.img
 BOARD_PREBUILT_IMAGES := abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
 BOARD_PREBUILT_IMAGES_PATH := /home/WundermentOS/devices/fajita/blobs/images
-
-# Below is the full partition list, but some fail to write so exclude them for now: dsp, modem, qupfw, tz
 AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp fw_4j1ed fw_4u1ea hyp keymaster LOGO modem qupfw storsec tz xbl xbl_config
-#AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg fw_4j1ed fw_4u1ea hyp keymaster LOGO storsec xbl xbl_config
