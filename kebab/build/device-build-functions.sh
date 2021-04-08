@@ -3,6 +3,13 @@
 VENDOR=oneplus
 
 function build_wos {
+	DFSFILE=~/android/lineage-$LOS_BUILD_VERSION/kernel/$VENDOR/sm8250/arch/arm64/configs/vendor/kona-perf_defconfig
+	# For this device we need to remove a the debugging file system for our user build.
+	# First check to see if we've already done it.
+	if ! grep "CONFIG_DEBUG_FS=y" $DFSFILE > /dev/null; then
+		sed -i 's/^CONFIG_DEBUG_FS=y/CONFIG_DEBUG_FS=n/' $DFSFILE
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
