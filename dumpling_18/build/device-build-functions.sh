@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VENDOR=oneplus
+
 function build_wos {
 	SEFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/msm8998-common/sepolicy/vendor/hal_camera_default.te
 	# For this device we need to remove a debugging permission for our user build.
