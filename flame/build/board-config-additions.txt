@@ -1,14 +1,8 @@
-
-# Add vendor image to the OTA and vbmeta hashtree.
-#BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/flame/blobs/images_raw/vendor.img
-#AB_OTA_PARTITIONS += vendor
-
 # Set the AVB key and hash algorithm.
 BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.key
 BOARD_AVB_ALGORITHM := SHA256_RSA2048
 
 # Include the rest of the prebuilt partitions.
-# The following three images are exclude as lineage recovery doesn't seem to be able to flash them: india.img, reserve.img, oem_stanvbk.img
-#BOARD_PREBUILT_IMAGES := abl aop devcfg hyp keymaster logfs modem msadp qupfw super_empty tz uefisecapp xbl xbl_config
-#BOARD_PREBUILT_IMAGES_PATH := /home/WundermentOS/devices/flame/blobs/images
-#AB_OTA_PARTITIONS += abl aop devcfg hyp keymaster logfs modem msadp qupfw super_empty tz uefisecapp xbl xbl_config
+BOARD_PREBUILT_IMAGES := modem
+BOARD_PREBUILT_IMAGES_PATH := /home/WundermentOS/devices/flame/blobs/images
+AB_OTA_PARTITIONS += modem
