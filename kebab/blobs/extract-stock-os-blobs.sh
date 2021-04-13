@@ -55,12 +55,16 @@ else
 	# 	system/vbmeta/boot/dtbo will be generated during build
 	#	india/reserve/oem_stanvbk can't be written by lineage recovery
 	rm system.img
+	rm system_ext.img
 	rm vbmeta.img
+	rm vbmeta_system.img
 	rm boot.img
 	rm dtbo.img
 	rm india.img
 	rm reserve.img
 	rm oem_stanvbk.img
+	rm product.img
+	rm recovery.img
 
 	# Change to the images directory.
 	cd ~/devices/$DEVICE/blobs/images
