@@ -6,7 +6,7 @@ function build_wos {
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/BoardConfig.mk
 	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
-	if ! grep vendor.img $BCFILE > /dev/null; then
+	if ! grep WundermentOS $BCFILE > /dev/null; then
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
 
@@ -26,6 +26,13 @@ function build_wos {
 		sed -i 's/^CONFIG_DEBUG_FS=y/CONFIG_DEBUG_FS=n/' $DFSFILE
 	fi
 
+	IRQRCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8250-common/rootdir/etc/init.recovery.qcom.rc
+	# For this device we need to remove add a couple of symlinks so we can update all the partitions through recovery.
+	# First check to see if we've already done it.
+	if ! grep "spunvm_a" $IRQRCFILE > /dev/null; then
+		patch $IRQRCFILE ~/devices/$DEVICE/build/init.recovery.qcom.rc.patch
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
@@ -40,8 +47,8 @@ function sign_wos {
 	source build/envsetup.sh
 	croot
 
-	# Use the standard signing script.
-	sign_wos_target_apks
+	# Use the signing script that includes other prebuilt partition support.
+	sign_wos_target_apks_other_prebuilt
 
 	# Then generate the OTA as usual.
 	sign_wos_target_files
