@@ -37,7 +37,7 @@ function sign_wos {
 	croot
 
 	# Use the standard signing script.
-	sign_wos_target_apks
+	sign_wos_target_apks_other_prebuilt
 
 	# Then generate the OTA as usual.
 	sign_wos_target_files
