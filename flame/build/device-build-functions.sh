@@ -36,7 +36,7 @@ function sign_wos {
 	source build/envsetup.sh
 	croot
 
-	# Use the standard signing script.
+	# Use the signing script that includes other prebuilt partition support.
 	sign_wos_target_apks_other_prebuilt
 
 	# Then generate the OTA as usual.
