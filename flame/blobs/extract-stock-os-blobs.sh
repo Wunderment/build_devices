@@ -40,23 +40,16 @@ else
 
 	# Overall for proprietary blobs we're using TheMuppets, but we still need some of the stock partitions, so get them now.
 	# Make sure we're in the blobs directory to start.
-	cd ~/devices/$DEVICE/blobs/
+	cd ~/devices/$DEVICE/blobs/images_raw
 
-	# Extract the stock OS zip file.
-	unzip -j -o ~/devices/$DEVICE/stock_os/current-stock-os.zip *.zip
-
-	# Change in to the output directory.
-	cd images_raw
-
-	# Extract the payload.bin file from stock.
-	unzip -o ../*.zip 
-
-	# Now unzp the boot and radio images.
+	# Now unzip the radio and bootloader images.
 	unzip -j -o ~/devices/$DEVICE/stock_os/current-stock-os.zip *.img
+
+	# We only need radio though...
+	rm bootloader*.img
 
 	# And extract the img files.
 	imjtool radio*.img extract
-	imjtool bootloader*.img extract
 
 	# Add ".img" to the extracted files and move them up a directory.
 	cd extracted
@@ -69,16 +62,7 @@ else
 	# Get rid of the images we don't need.
 	# 	system/vbmeta/boot/dtbo will be generated during build
 	#	india/reserve/oem_stanvbk can't be written by lineage recovery
-	rm android-info.txt
 	rm radio*.img
-	rm bootloader*.img
-	#rm system.img
-	#rm vbmeta.img
-	#rm boot.img
-	#rm dtbo.img
-	#rm india.img
-	#rm reserve.img
-	#rm oem_stanvbk.img
 
 	# Change to the images directory.
 	cd ~/devices/$DEVICE/blobs/images
@@ -86,12 +70,6 @@ else
 	# Copy over the raw images from OOS.
 	cp ~/devices/$DEVICE/blobs/images_raw/*.img .
 
-	# Remove vendor.img as we'll pull a version with the proper hashtree after the build is run.
-	rm vendor.img
-
 	# Return to the blobs directory.
 	cd ~/devices/$DEVICE/blobs/
-
-	# We don't need zip anymore.
-	rm *.zip
 fi
