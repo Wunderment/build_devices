@@ -57,10 +57,10 @@ else
 	rm system.img
 	rm vbmeta.img
 	rm boot.img
-	rm dtbo.img
-	rm india.img
-	rm reserve.img
-	rm oem_stanvbk.img
+	#rm dtbo.img
+	#rm india.img
+	#rm reserve.img
+	#rm oem_stanvbk.img
 
 	# Change to the images directory.
 	cd ~/devices/$DEVICE/blobs/images
