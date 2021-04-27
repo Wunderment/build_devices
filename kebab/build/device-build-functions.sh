@@ -19,6 +19,12 @@ function build_wos {
 		sed -i 's/^BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external\/avb\/test\/data\/testkey_rsa2048.pem/BOARD_AVB_KEY_PATH := \/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 	fi
 
+	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8250-common/common.mk
+	# We need to add the OEM lock/unlock feature to developers options if it's not there already.
+	if ! grep "ro.oem_unlock_supported=1" $CFILE > /dev/null; then
+		sed -i 's/^# OMX/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OMX/' $CFILE
+	fi
+
 	DFSFILE=~/android/lineage-$LOS_BUILD_VERSION/kernel/$VENDOR/sm8250/arch/arm64/configs/vendor/kona-perf_defconfig
 	# For this device we need to remove a the debugging file system for our user build.
 	# First check to see if we've already done it.
