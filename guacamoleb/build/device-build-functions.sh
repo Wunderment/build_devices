@@ -3,7 +3,7 @@
 VENDOR=oneplus
 
 function build_wos {
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/BoardConfig.mk
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/BoardConfig.mk
 	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
 	if ! grep vendor.img $BCFILE > /dev/null; then
@@ -16,12 +16,19 @@ function build_wos {
 	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" $BCCFILE > /dev/null; then
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 2/' $BCCFILE
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/' $BCCFILE
+		sed -i 's/^BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external\/avb\/test\/data\/testkey_rsa2048.pem/BOARD_AVB_KEY_PATH := \/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 	fi
 
-	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/common.mk
-	# We need to add the OEM lock/unlock feature to developers options if it's not there already.
-	if ! grep "ro.oem_unlock_supported=1" $CFILE > /dev/null; then
-		sed -i 's/^# OMX/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OMX/' $CFILE
+	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
+	# Add the RADIO files to the build system.
+	if [ ! -f $ABFILE ]; then
+		cp  ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
+	fi
+
+	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/root_dir/etc/init.recovery.qcom.rc
+	# We need to add a couple of symlinks to the recovery init script so we can flash partitions.
+	if ! grep "oem_stanvbk_a" $IRQFILE > /dev/null; then
+		patch $IRQFILE ~/devices/$DEVICE/build/init.recovery.qcom.rc.patch
 	fi
 
 	# Build WOS.
@@ -39,7 +46,7 @@ function sign_wos {
 	croot
 
 	# Use the pre-built version of the vendor img during signing.
-	sign_wos_target_apks_vendor_prebuilt
+	sign_wos_target_apks
 
 	# Then generate the OTA as usual.
 	sign_wos_target_files

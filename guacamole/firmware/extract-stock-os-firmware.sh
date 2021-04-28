@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# Get the device name from the parent directory of this script's real path.
-DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
+# Configuration variables for this device.
+VENDOR=oneplus
+DELETE_IMAGES="system.img vbmeta.img boot.img dtbo.img reserve.img odm.img vendor.img"
+PREBUILT_VENDOR=false
 
-if [ ! -f ../stock_os/current-stock-os.zip ]; then
-    	echo "Stock OS not found!"
-	echo ""
-        echo "Run \"../stock_os/get-stock-os.sh\" to retreive it."
-else
-	echo "Firmware is extracted as part of the ../blobs/extract-stock-os-blobs.sh script for $DEVICE."
-fi
+source ~/tasks/firmware/extract-stock-os-firmware-common.sh

@@ -10,4 +10,3 @@ export SCRIPT_TITLE="Usage: ./build.sh <action> ... <action>"
 
 ~/tasks/build/build.sh $@ $DEVICE
 
-

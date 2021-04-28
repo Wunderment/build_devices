@@ -3,7 +3,7 @@
 VENDOR=oneplus
 
 function build_wos {
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/BoardConfig.mk
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/BoardConfig.mk
 	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
 	if ! grep WundermentOS $BCFILE > /dev/null; then
@@ -30,6 +30,12 @@ function build_wos {
 	# First check to see if we've already done it.
 	if ! grep "CONFIG_DEBUG_FS=y" $DFSFILE > /dev/null; then
 		sed -i 's/^CONFIG_DEBUG_FS=y/CONFIG_DEBUG_FS=n/' $DFSFILE
+	fi
+	
+	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
+	# Add the RADIO files to the build system.
+	if [ ! -f $ABFILE ]; then
+		cp  ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
 	fi
 
 	IRQRCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8250-common/rootdir/etc/init.recovery.qcom.rc

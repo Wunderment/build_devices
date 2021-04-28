@@ -15,13 +15,13 @@ cd ~/devices/$DEVICE/stock_os
 
 # Set the phone code for OnePlus, it is used deep inside the curl call.
 PHONECODE=PM1574156235282
-PHONELOC=uk
+PHONELOC=ca
 
 # Remove the old json file before we download the new one.
 rm oneplus.json
 
 # Use curl to download the current info from OnePlus for this device.
-curl 'https://www.oneplus.com/xman/send-in-repair/find-phone-systems' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundaryx6kJsIUK0M2Dzl5d' --data-binary $'------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="storeCode"\r\n\r\n'"$PHONELOC"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="phoneCode"\r\n\r\n'"$PHONECODE"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d--\r\n' -o oneplus.json
+curl 'https://www.oneplus.com/xman/send-in-repair/find-phone-systems' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundaryx6kJsIUK0M2Dzl5d' --data-binary $'------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="storeCode"\r\n\r\n'"$PHONELOC"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="phoneCode"\r\n\r\n'"$PHONECODE"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d--\r\n' -o oneplus.json > /dev/null 2>&1
 
 # Parse the json file and download/process if necessary.
 php ~/tasks/stock_os/get-oos.php
