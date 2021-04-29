@@ -14,6 +14,10 @@ VENDOR=google
 # but for the actual LOS build, we need to strip it off.  So do so now.
 LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 
+# We're going to override the LOS_DEVICE setting as in LinageOS flame is basically an empty device,
+# with coral being the actual device tree location.
+LOS_DEVICE=coral
+
 # Find out which version of LinageOS we're going to build for this device.
 WOS_BUILD_VAR=WOS_BUILD_VER_${DEVICE^^}
 LOS_BUILD_VERSION=${!WOS_BUILD_VAR}

@@ -22,6 +22,12 @@ function build_wos {
 		sed -i 's/^BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external\/avb\/test\/data\/testkey_rsa2048.pem/BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := \/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 	fi
 
+	AFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/coral/Android.mk
+	# Add the RADIO files to the build system.
+	if ! grep "modem.img" $AFILE > /dev/null; then
+		sed -i 's/^IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so/$(call add-radio-file,..\/images\/modem.img)\n\nIMS_LIBS := libimscamera_jni.so libimsmedia_jni.so/' $AFILE
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
@@ -37,7 +43,7 @@ function sign_wos {
 	croot
 
 	# Use the signing script that includes other prebuilt partition support.
-	sign_wos_target_apks_other_prebuilt
+	sign_wos_target_apks
 
 	# Then generate the OTA as usual.
 	sign_wos_target_files
