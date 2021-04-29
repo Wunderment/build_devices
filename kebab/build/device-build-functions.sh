@@ -31,7 +31,7 @@ function build_wos {
 	if ! grep "CONFIG_DEBUG_FS=y" $DFSFILE > /dev/null; then
 		sed -i 's/^CONFIG_DEBUG_FS=y/CONFIG_DEBUG_FS=n/' $DFSFILE
 	fi
-	
+
 	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
 	# Add the RADIO files to the build system.
 	if [ ! -f $ABFILE ]; then
@@ -60,7 +60,7 @@ function sign_wos {
 	croot
 
 	# Use the signing script that includes other prebuilt partition support.
-	sign_wos_target_apks_other_prebuilt
+	sign_wos_target_apks
 
 	# Then generate the OTA as usual.
 	sign_wos_target_files
