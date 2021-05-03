@@ -43,7 +43,7 @@ else
 
 	# Mount the system and vendor data.
 	#
-	# Note, these must appear in /etc/fstab otherwise we'd have to be root to moount them.  Use the following entires
+	# Note, these must appear in /etc/fstab otherwise we'd have to be root to mount them.  Use the following entires
 	# in fstab to allow a user to mount them:
 	#
 	# /home/WundermentOS/devices/dumpling/blobs/system_dump/system.img /home/WundermentOS/devices/dumpling/blobs/system_dump/system auto defaults,noauto,user 0 1
