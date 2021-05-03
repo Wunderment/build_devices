@@ -23,7 +23,7 @@ function build_wos {
 		cp  ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
 	fi
 
-	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/root_dir/etc/init.recovery.qcom.rc
+	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/rootdir/etc/init.recovery.qcom.rc
 	# We need to add a couple of symlinks to the recovery init script so we can flash partitions.
 	if ! grep "oem_stanvbk_a" $IRQFILE > /dev/null; then
 		patch $IRQFILE ~/devices/$DEVICE/build/init.recovery.qcom.rc.patch
