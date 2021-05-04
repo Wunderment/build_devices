@@ -31,7 +31,7 @@ function build_wos {
 		sed -i 's/^# OMX/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OMX/' $CFILE
 	fi
 
-	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/root_dir/etc/init.recovery.qcom.rc
+	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/rootdir/etc/init.recovery.qcom.rc
 	# We need to add a couple of symlinks to the recovery init script so we can flash partitions.
 	if ! grep "oem_stanvbk_a" $IRQFILE > /dev/null; then
 		patch $IRQFILE ~/devices/$DEVICE/build/init.recovery.qcom.rc.patch
