@@ -13,15 +13,8 @@ LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 # Make sure we're in the stock os directory.
 cd ~/devices/$DEVICE/stock_os
 
-# Set the phone code for OnePlus, it is used deep inside the curl call.
+# Set the phone code and other settings to use in get-oneplus.sh.
 PHONECODE=PM1574156215016
-PHONELOC=us
 
-# Remove the old json file before we download the new one.
-rm oneplus.json
-
-# Use curl to download the current info from OnePlus for this device.
-curl 'https://www.oneplus.com/xman/send-in-repair/find-phone-systems' -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundaryx6kJsIUK0M2Dzl5d' --data-binary $'------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="storeCode"\r\n\r\n'"$PHONELOC"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d\r\nContent-Disposition: form-data; name="phoneCode"\r\n\r\n'"$PHONECODE"$'\r\n------WebKitFormBoundaryx6kJsIUK0M2Dzl5d--\r\n' -o oneplus.json > /dev/null 2>&1
-
-# Parse the json file and download/process if necessary.
-php ~/tasks/stock_os/get-oos.php
+# Call the common script to download the stock OS from OnePlus.
+source /home/WundermentOS/tasks/stock_os/get-oneplus.sh
