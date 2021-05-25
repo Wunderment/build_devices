@@ -37,6 +37,12 @@ function build_wos {
 		patch $IRQFILE ~/devices/$DEVICE/build/init.recovery.qcom.rc.patch
 	fi
 
+	IQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/rootdir/etc/init.qcom.rc
+	# We need to add a couple of symlinks to the init script so we can flash partitions.
+	if ! grep "oem_stanvbk_a" $IQFILE > /dev/null; then
+		patch $IQFILE ~/devices/$DEVICE/build/init.qcom.rc.patch
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
