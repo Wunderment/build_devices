@@ -14,7 +14,9 @@ LOS_DEVICE=`echo $DEVICE | sed 's/_.*//'`
 cd ~/devices/$DEVICE/stock_os
 
 # Set the phone code and other settings to use in get-oneplus.sh.
-PHONECODE=PM1574156235282
+PHONECODE=PM1574156173727
+PHONELOC=ca
+COOKIES=refererstore=ca_en; redirectedCountry=ca_en;
 
 # Call the common script to download the stock OS from OnePlus.
 source /home/WundermentOS/tasks/stock_os/get-oneplus.sh

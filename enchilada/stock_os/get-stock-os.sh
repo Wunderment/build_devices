@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Don't bother checking for new releases as the 5T is out of support now.
+exit
+
 # Get the device name from the parent directory of this script's real path.
 DEVICE=$(basename $(dirname $(dirname $(realpath $0))))
 
