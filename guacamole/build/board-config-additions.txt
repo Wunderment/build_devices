@@ -6,5 +6,5 @@ BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.key
 BOARD_AVB_ALGORITHM := SHA256_RSA2048
 
 # Include the rest of the prebuilt partitions.
-# The following three images are exclude as lineage recovery doesn't seem to be able to flash them: india.img, reserve.img
-AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp hyp keymaster LOGO modem oem_stanvbk qupfw storsec tz xbl xbl_config
+# The following three images are exclude as lineage recovery doesn't seem to be able to flash them: LOGO.img india.img, reserve.img
+AB_OTA_PARTITIONS += abl aop bluetooth cmnlib cmnlib64 devcfg dsp hyp keymaster modem oem_stanvbk qupfw storsec tz xbl xbl_config
