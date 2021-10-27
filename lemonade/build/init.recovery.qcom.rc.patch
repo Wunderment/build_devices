@@ -1,0 +1,13 @@
+diff --git a/rootdir/etc/init.recovery.qcom.rc b/rootdir/etc/init.recovery.qcom.rc
+index 32cfe26..50c3e7d 100644
+--- a/rootdir/etc/init.recovery.qcom.rc
++++ b/rootdir/etc/init.recovery.qcom.rc
+@@ -3,6 +3,8 @@ import /init.recovery.target.rc
+ on fs
+     wait /dev/block/platform/soc/${ro.boot.bootdevice}
+     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_a
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_b
+
+ on init
+     setprop sys.usb.configfs 1

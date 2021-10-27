@@ -1,0 +1,13 @@
+diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
+index dfcea84..9a7c818 100644
+--- a/rootdir/etc/init.qcom.rc
++++ b/rootdir/etc/init.qcom.rc
+@@ -86,6 +86,8 @@ on init
+
+ on post-fs
+     chmod 0755 /sys/kernel/debug/tracing
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_a
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_b
+
+ on early-boot
+     # set RLIMIT_MEMLOCK to 64MB
