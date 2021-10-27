@@ -1,0 +1,12 @@
+diff --git a/system.prop b/system.prop
+index 862e4ad..695af5d 100644
+--- a/system.prop
++++ b/system.prop
+@@ -59,3 +59,7 @@ ro.vendor.qti.va_aosp.support=1
+ 
+ # Zygote
+ persist.device_config.runtime_native.usap_pool_enabled=true
++
++# Fingerprint
++vendor.boot.fingerprintbstate=orange
++
