@@ -51,6 +51,14 @@ function build_wos {
 		patch $IQFILE ~/devices/$DEVICE/build/init.qcom.rc.patch
 	fi
 
+	LMFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/lineage_lemonade.mk
+	# The default device ID for lemonade in LineageOS is the European model, let's get ride of the EEA tag so it's a global device instead.
+	# Also change the model number to the global device.
+	if grep "_EEA" $LMFILE > /dev/null; then
+		sed -i 's/_EEA//' $LMFILE
+		sed -i 's/LE2113/LE2115/' $LMFILE
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
