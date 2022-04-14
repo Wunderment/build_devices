@@ -2,7 +2,7 @@
 ADD_RADIO_FILES := true
 
 # Add vendor image to the OTA and vbmeta hashtree.
-BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/enchilada/firmware/vendor.img
+BOARD_PREBUILT_VENDORIMAGE := /home/WundermentOS/devices/enchilada_18/firmware/vendor.img
 AB_OTA_PARTITIONS += vendor
 
 # Set the AVB key and hash algorithm.
