@@ -1,0 +1,15 @@
+diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
+index 956219b..c31df57 100644
+--- a/rootdir/etc/init.qcom.rc
++++ b/rootdir/etc/init.qcom.rc
+@@ -5,6 +5,10 @@ on boot
+     # OTG
+     write /sys/class/power_supply/usb/otg_switch 1
+ 
++on post-fs
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_a
++    symlink /dev/block/bootdevice/by-name/oem_stanvbk /dev/block/bootdevice/by-name/oem_stanvbk_b
++
+ on charger
+     write /sys/class/backlight/panel0-backlight/brightness 150
+ 
