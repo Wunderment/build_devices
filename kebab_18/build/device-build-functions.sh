@@ -59,14 +59,14 @@ function build_wos {
 	#
 	# From dotOS patch: https://github.com/dotOS-Devices/device_oneplus_sm8250-common/commit/6fc4be42a0a2bf33e511f7b35b1d7d59aae5fe07
 	FPBLOBPATH=~/android/lineage-$LOS_BUILD_VERSION/vendor/oneplus/kebab/proprietary/vendor/lib64
-	if ~ grep "vendor.boot.verifiedbootstate" $FPBLOBPATH/libgf_ud_hal.so > /dev/null; then
+	if grep "vendor.boot.verifiedbootstate" $FPBLOBPATH/libgf_ud_hal.so > /dev/null; then
 		sed -i "s|vendor.boot.verifiedbootstate|vendor.boot.fingerprintbstate|g" $FPBLOBPATH/libgf_ud_hal.so
 	fi
-	if ~ grep "vendor.boot.verifiedbootstate" $FPBLOBPATH/libgf_g6_ud_hal.so > /dev/null; then
+	if grep "vendor.boot.verifiedbootstate" $FPBLOBPATH/libgf_g6_ud_hal.so > /dev/null; then
 		sed -i "s|vendor.boot.verifiedbootstate|vendor.boot.fingerprintbstate|g" $FPBLOBPATH/libgf_g6_ud_hal.so
 	fi
 	SYSPROPFILE=~/android/lineage-$LOS_BUILD_VERSION/device/oneplus/sm8350-common/system.prop
-	if ~ grep "vendor.boot.fingerprintbstate" $SYSPROPFILE > /dev/null; then
+	if grep "vendor.boot.fingerprintbstate" $SYSPROPFILE > /dev/null; then
 		patch $SYSPROPFILE ~/devices/$DEVICE/build/system.prop.patch
 	fi
 
