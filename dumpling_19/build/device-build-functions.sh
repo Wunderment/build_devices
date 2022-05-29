@@ -20,6 +20,12 @@ function build_wos {
 		sed -i 's/^# SELinux/# Verified Boot\nBOARD_AVB_ENABLE := false\n\n# SELinux/' $BCCFILE
 	fi
 
+	# For this device we need to set the BOARD_BUILDS_VENDORIMAGE flag so the signing works correctly.
+	# First check to see if we've already done it.
+	if ! grep "BOARD_BUILDS_VENDORIMAGE := true" $BCCFILE > /dev/null; then
+		sed -i 's/^# SELinux/# Vendor Image\BOARD_BUILDS_VENDORIMAGE := true\n\n# SELinux/' $BCCFILE
+	fi
+
 	common_build_wos
 }
 
