@@ -27,4 +27,6 @@ $(call add-radio-file,images/uefisecapp.img)
 $(call add-radio-file,images/vm-bootsys.img)
 $(call add-radio-file,images/xbl.img)
 $(call add-radio-file,images/xbl_config.img)
+# Android 12 images.
+$(call add-radio-file,images/engineering_cdt.img)
 endif
