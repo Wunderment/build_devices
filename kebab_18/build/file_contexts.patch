@@ -1,0 +1,12 @@
+diff --git a/sepolicy/vendor/file_contexts b/sepolicy/vendor/file_contexts
+index 661d93b..daf4624 100644
+--- a/sepolicy/vendor/file_contexts
++++ b/sepolicy/vendor/file_contexts
+@@ -26,6 +26,7 @@
+ /dev/block/platform/soc/1d84000.ufshc/by-name/reserve2           u:object_r:reserve2_block_device:s0
+ /dev/block/platform/soc/1d84000.ufshc/by-name/spunvm             u:object_r:vendor_efs_boot_dev:s0
+ /dev/block/platform/soc/1d84000.ufshc/by-name/storsec_[ab]       u:object_r:vendor_custom_ab_block_device:s0
++/dev/block/platform/soc/1d84000.ufshc/by-name/mdm_oem_stanvbk_[ab] u:object_r:vendor_efs_boot_dev:s0
+ 
+ # Data files
+ /data/reserve-lib(/.*)?    u:object_r:apk_data_file:s0
