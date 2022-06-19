@@ -51,6 +51,12 @@ function build_wos {
 		patch $IQFILE ~/devices/$DEVICE/build/init.qcom.rc.patch
 	fi
 
+	TEFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8350-common/sepolicy/vendor/update_engine.te
+	# Add in the extra permissions for the update engine to access the extra oem partitions for OTAs.
+	if [ ! -f $TEFILE ]; then
+		cp ~/devices/$DEVICE/build/update_engine.te $TEFILE
+	fi
+
 	# Build WOS.
 	common_build_wos
 }
