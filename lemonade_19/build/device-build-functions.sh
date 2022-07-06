@@ -51,6 +51,8 @@ function build_wos {
 		patch $IQFILE ~/devices/$DEVICE/build/init.qcom.rc.patch
 	fi
 
+	~/tasks/build/switch-keys.sh 4096
+
 	# Build WOS.
 	common_build_wos
 }
@@ -87,6 +89,8 @@ function sign_wos {
 		rm $HOME/releases/ota/$LOS_DEVICE/dtbo.img
 		rm $HOME/releases/ota/$LOS_DEVICE/vendor_boot.img
 	fi
+
+	~/tasks/build/switch-keys.sh 2048
 
 	echo "Signing process complete for $DEVICE!"
 }
