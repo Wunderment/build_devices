@@ -56,7 +56,7 @@ function build_wos {
 	if [ ! -f $TEFILE ]; then
 		cp ~/devices/$DEVICE/build/update_engine.te $TEFILE
 	fi
-	
+
 	# The OxygenOS fingerprint vendor libraries check the bootloader lock state and only support vendor locked or
 	# fully unlocked states, so if you relock the bootloader with WundermentOS install the finger print reader will
 	# no longer function.
@@ -78,7 +78,7 @@ function build_wos {
 
 	FCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8250-common/sepolicy/vendor/file_contexts
 	# Add the mdm_oem_stanvbk_[ab] partitions to the block list.
-	if ! grep "mdm_oem_stanvbk_[ab]" $FCFILE > /dev/null; then
+	if ! grep "mdm_oem_stanvbk_" $FCFILE > /dev/null; then
 		patch $FCFILE ~/devices/$DEVICE/build/file_contexts.patch
 	fi
 
