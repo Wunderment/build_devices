@@ -6,7 +6,7 @@ function build_wos {
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/BoardConfig.mk
 	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
-	if ! grep ADD_RADIO_FILES $BCFILE > /dev/null; then
+	if ! grep vendor.img $BCFILE > /dev/null; then
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
 
@@ -18,16 +18,16 @@ function build_wos {
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/' $BCCFILE
 	fi
 
-	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/common.mk
-	# We need to add the OEM lock/unlock feature to developers options if it's not there already.
-	if ! grep "ro.oem_unlock_supported=1" $CFILE > /dev/null; then
-		sed -i 's/^# OMX/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OMX/' $CFILE
-	fi
-
 	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
 	# Add the RADIO files to the build system.
 	if [ ! -f $ABFILE ]; then
 		cp  ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
+	fi
+
+	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/common.mk
+	# We need to add the OEM lock/unlock feature to developers options if it's not there already.
+	if ! grep "ro.oem_unlock_supported=1" $CFILE > /dev/null; then
+		sed -i 's/^# OMX/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OMX/' $CFILE
 	fi
 
 	IRQFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm8150-common/rootdir/etc/init.recovery.qcom.rc
