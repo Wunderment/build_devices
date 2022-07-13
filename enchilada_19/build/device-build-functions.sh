@@ -18,7 +18,7 @@ function build_wos {
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --set_hashtree_disabled_flag/' $BCCFILE
 	fi
 
-	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sm845-common/common.mk
+	CFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/sdm845-common/common.mk
 	# We need to add the OEM lock/unlock feature to developers options if it's not there already.
 	if ! grep "ro.oem_unlock_supported=1" $CFILE > /dev/null; then
 		sed -i 's/^# OnePlus/# OEM Unlock reporting\nPRODUCT_DEFAULT_PROPERTY_OVERRIDES += \\\n    ro.oem_unlock_supported=1\n\n# OnePlus/' $CFILE
