@@ -17,7 +17,7 @@ function build_wos {
 
 	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/coral/BoardConfig-common.mk
 	# We need to set the correct key for signing the system vbmeta.img.
-	if ! grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
+	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
 		sed -i 's/^BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external\/avb\/test\/data\/testkey_rsa2048.pem/BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := \/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 	fi
 
