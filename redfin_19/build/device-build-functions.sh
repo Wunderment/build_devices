@@ -3,7 +3,7 @@
 VENDOR=google
 
 function build_wos {
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/BoardConfigLineage.mk
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/BoardConfigLineage.mk
 	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
 	# First check to see if we've already one it.
 	if ! grep WundermentOS $BCFILE > /dev/null; then
@@ -20,6 +20,7 @@ function build_wos {
 	# We need to set the correct key for signing the system vbmeta.img.
 	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
+		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
 
 	AFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/Android.mk
@@ -28,9 +29,11 @@ function build_wos {
 		sed -i 's/^IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so/$(call add-radio-file,images\/modem.img)\n\nIMS_LIBS := libimscamera_jni.so libimsmedia_jni.so/' $AFILE
 	fi
 
-	ASOPFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$DEVICE/aosp_$DEVICE.mk
+	ASOPFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/aosp_$LOS_DEVICE.mk
 	# Disable strict path enforcement otherwise the build will fail when we add f-droid etc.
 	sed -i 's/^PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := strict/#PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := strict/' $ASOPFILE
+
+	~/tasks/build/switch-keys.sh 4096
 
 	# Build WOS.
 	common_build_wos
@@ -54,6 +57,8 @@ function sign_wos {
 
 	# Create the MD5 checksum file, copy the build prop file and cleanup the target_files zip.
 	checksum_buildprop_cleanup
+
+	~/tasks/build/switch-keys.sh 2048
 
 	echo "Signing process complete for $DEVICE!"
 }
