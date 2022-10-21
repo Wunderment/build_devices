@@ -35,7 +35,7 @@ function build_wos {
 	fi
 
 	# Add the RADIO files to the build system.
-	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/AndroidBoard.mk
+	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
 	if [ ! -f $ABFILE ]; then
 		cp ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
 	fi
