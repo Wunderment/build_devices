@@ -1,35 +1,46 @@
 #!/bin/bash
 
+### Global variables ###
+
+# Tell the build system which img file to use as the recovery img.
+export LOS_RECOVERY_IMG=vendor_boot
+
+### Local variables ###
+
+# Set the vendor for this device.
 VENDOR=google
 
+# This device use a common/shared device tree.
+COMMONDEVICE=redbull
+
 function build_wos {
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/BoardConfigLineage.mk
-	# For this device we need to add the prebuilt vendor.img and other partitions to the build system, do that now.
+	# For this device we need to add the factory partitions to the build system, do that now.
 	# It will also disable strict path enforcement so we can add F-Droid etc to the system partition.
-	# First check to see if we've already one it.
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigLineage.mk
 	if ! grep WundermentOS $BCFILE > /dev/null; then
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
 
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/BoardConfigLineage.mk
-	# We need to remove the flag that disables the partition verification during boot.
+	# We need to remove the flag that disables AVB during boot.
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigLineage.mk
 	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" $BCFILE > /dev/null; then
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/' $BCFILE
 	fi
 
-	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/BoardConfig-common.mk
 	# We need to set the correct key for signing the system vbmeta.img.
+	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfig-common.mk
 	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
 
-	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/redbull/AndroidBoard.mk
 	# Add the RADIO files to the build system.
+	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/AndroidBoard.mk
 	if [ ! -f $ABFILE ]; then
 		cp ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
 	fi
 
+	# Make sure we're using the 4096 bit signing keys.
 	~/tasks/build/switch-keys.sh 4096
 
 	# Build WOS.
@@ -54,24 +65,6 @@ function sign_wos {
 
 	# Create the MD5 checksum file, copy the build prop file and cleanup the target_files zip.
 	checksum_buildprop_cleanup
-
-	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
-		echo "Replacing default recovery with vendor_boot..."
-		RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
-
-		# Remove the recovery image we added to the archive during the standard build process...
-		zip -d  $RECOVERYNAME.zip $RECOVERYNAME.img
-
-		# Now get the vendor_boot.img and rename it.
-		unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/vendor_boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
-		mv $HOME/releases/ota/$LOS_DEVICE/vendor_boot.img $HOME/releases/ota/$LOS_DEVICE/$RECOVERYNAME.img
-
-		# Add the new recovery to the zip file.
-		zip -j $RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/$RECOVERYNAME.img
-
-		# Cleanup!
-		rm $HOME/releases/ota/$LOS_DEVICE/$RECOVERYNAME.img
-	fi
 
 	~/tasks/build/switch-keys.sh 2048
 
