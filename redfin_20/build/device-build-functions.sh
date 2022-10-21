@@ -35,9 +35,9 @@ function build_wos {
 	fi
 
 	# Add the RADIO files to the build system.
-	ABFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/AndroidBoard.mk
-	if [ ! -f $ABFILE ]; then
-		cp ~/devices/$DEVICE/build/AndroidBoard.mk $ABFILE
+	AFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/Android.mk
+	if grep "# Radio image" $AFILE > /dev/null; then
+		cat ~/devices/$DEVICE/build/Aandroid-mk-additions >> $AFILE
 	fi
 
 	# Make sure we're using the 4096 bit signing keys.
