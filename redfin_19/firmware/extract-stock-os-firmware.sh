@@ -43,25 +43,23 @@ else
 	# Make sure we're in the images_raw directory to start.
 	cd ~/devices/$DEVICE/firmware/images_raw
 
-	# Now unzip the radio and bootloader images.
-	unzip -j -o ~/devices/$DEVICE/stock_os/current-stock-os.zip *.img
+	# Now unzip the payload.bin file.
+	unzip -j -o ~/devices/$DEVICE/stock_os/current-stock-os.zip payload.bin
 
-	# We only need radio though...
-	rm bootloader*.img
+	# Extract the actual image files.
+	payload-dumper-go -o . payload.bin
 
-	# And extract the img files.
-	imjtool radio*.img extract
-
-	# Add ".img" to the extracted files and move them up a directory.
-	cd extracted
-	for f in *; do mv "$f" "../$f.img"; done
-
-	# Remove the extracted directory.
-	cd ..
-	rm -rf extracted
-
-	# Get rid of the images we don't need.
-	rm radio*.img
+	# We don't need the payload.bin and some of the other images anymore.
+	rm payload.bin
+	rm boot.img
+	rm dtbo.img
+	rm product.img
+	rm system.img
+	rm system_ext.img
+	rm vbmeta.img
+	rm vbmeta_system.img
+	rm vendor_boot.img
+	rm vendor.img
 
 	# Change to the images directory.
 	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images
