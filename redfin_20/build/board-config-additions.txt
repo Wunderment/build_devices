@@ -7,6 +7,6 @@ BOARD_AVB_KEY_PATH := /home/WundermentOS/.android-certs/releasekey.key
 BOARD_AVB_ALGORITHM := SHA256_RSA4096
 
 # Include the rest of the prebuilt partitions.
-AB_OTA_PARTITIONS += abl aop devcfg featenabler hyp keymaster modem qupfw tz uefisecapp xbl xbl_configa
+AB_OTA_PARTITIONS += abl aop devcfg featenabler hyp keymaster modem qupfw tz uefisecapp xbl xbl_config
 
 DISABLE_ARTIFACT_PATH_REQUIREMENTS := true
