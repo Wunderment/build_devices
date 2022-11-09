@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Do nothing, as we're using The Muppets over on GitLab for this device.
+exit
+
 # Get the device list and build types.
 source ~/.WundermentOS/devices.sh
 
@@ -58,17 +61,21 @@ else
 	rm system_ext.img
 	rm vbmeta.img
 	rm vbmeta_system.img
+	rm vbmeta_vendor.img
 	rm vendor_boot.img
+	rm vendor_dlkm.img
 	rm vendor.img
 
-	# Change to the images directory.
-	cd ~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/images
+	# Check to make sure the device firmware radio directory exists, if not, create it.
+	if [ ! -d ~/android/lineage-$LOS_BUILD_VERSION/vendor/firmware/$LOS_DEVICE]
+		mkdir -p ~/android/lineage-$LOS_BUILD_VERSION/vendor/firmware/$LOS_DEVICE/radio
+	fi
+
+	# Change to the firmware radio directory.
+	cd ~/android/lineage-$LOS_BUILD_VERSION/vendor/$LOS_DEVICE/radio
 
 	# Copy over the raw images.
 	cp ~/devices/$DEVICE/firmware/images_raw/*.img .
-
-	# Return to the firmware directory.
-	cd ~/devices/$DEVICE/firmware/
 
 	# Cleanup!
 	rm -rf images_raw
