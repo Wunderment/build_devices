@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Do nothing, as we're using The Muppets over on GitLab for this device.
+exit
+
 # Get the device list and build types.
 source ~/.WundermentOS/devices.sh
 

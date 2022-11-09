@@ -34,12 +34,6 @@ function build_wos {
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
 
-	# Add the RADIO files to the build system.
-	AFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/Android.mk
-	if ! grep "# Radio image" $AFILE > /dev/null; then
-		cat ~/devices/$DEVICE/build/Android-mk-additions.txt >> $AFILE
-	fi
-
 	# Make sure we're using the 4096 bit signing keys.
 	~/tasks/build/switch-keys.sh 4096
 
