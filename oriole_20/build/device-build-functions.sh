@@ -27,17 +27,17 @@ function build_wos {
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/' $BCFILE
 	fi
 
-	# We need to set the correct key for signing the system vbmeta.img.
-	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfig-common.mk
+	# We need to set the correct key for signing the system.  For this device this is configured in a separate directory
+	# from the device AND the common directory, it also occures in two separate files.
+	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/gs101/BoardConfig-common.mk
 	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
-
-	# Add the RADIO files to the build system.
-	AFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/Android.mk
-	if ! grep "# Radio image" $AFILE > /dev/null; then
-		cat ~/devices/$DEVICE/build/Android-mk-additions.txt >> $AFILE
+	BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/gs101/BoardConfigLineage.mk
+	if grep "testkey_rsa2048.pem" $BCLFILE > /dev/null; then
+		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCLFILE
+		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCLFILE
 	fi
 
 	# Make sure we're using the 4096 bit signing keys.
