@@ -13,6 +13,9 @@ VENDOR=google
 # This device use a common/shared device tree.
 COMMONDEVICE=raviole
 
+# This device uses a common/shared chipset.
+CHIPSET=gs101
+
 function build_wos {
 	# For this device we need to add the factory partitions to the build system, do that now.
 	# It will also disable strict path enforcement so we can add F-Droid etc to the system partition.
@@ -22,33 +25,39 @@ function build_wos {
 	fi
 
 	# We need to remove the flag that disables AVB during boot.
-	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigLineage.mk
+	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfigLineage.mk
 	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" $BCFILE > /dev/null; then
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/' $BCFILE
 	fi
 
 	# We need to set the correct key for signing the system.  For this device this is configured in a separate directory
 	# from the device AND the common directory, it also occures in two separate files.
-	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/gs101/BoardConfig-common.mk
+	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfig-common.mk
 	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
-	BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/gs101/BoardConfigLineage.mk
+	BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfigLineage.mk
 	if grep "testkey_rsa2048.pem" $BCLFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCLFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCLFILE
 	fi
 
-	# Make sure we're using the 4096 bit signing keys.
+	# Switch to the 4096 bit signing keys.
 	~/tasks/build/switch-keys.sh 4096
 
 	# Build WOS.
 	common_build_wos
+
+	# Switch back to the default 2048 bit signing keys.
+	~/tasks/build/switch-keys.sh 2048
 }
 
 function sign_wos {
 	echo "Start signing process for $DEVICE..."
+
+	# Switch to the 4096 bit signing keys.
+	~/tasks/build/switch-keys.sh 4096
 
 	# Move in to the build directory
 	cd ~/android/lineage-$LOS_BUILD_VERSION
@@ -66,6 +75,7 @@ function sign_wos {
 	# Create the MD5 checksum file, copy the build prop file and cleanup the target_files zip.
 	checksum_buildprop_cleanup
 
+	# Switch back to the default 2048 bit signing keys.
 	~/tasks/build/switch-keys.sh 2048
 
 	echo "Signing process complete for $DEVICE!"
