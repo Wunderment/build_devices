@@ -1,6 +1,17 @@
 #!/bin/bash
 
+### Global variables ###
+
+# Tell the build system which img file to use as the recovery img.
+export LOS_RECOVERY_IMG=boot
+
+### Local variables ###
+
+# Set the vendor for this device.
 VENDOR=oneplus
+
+# This device use a common/shared device tree.
+COMMONDEVICE=sm8150-common
 
 function build_wos {
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$LOS_DEVICE/BoardConfig.mk

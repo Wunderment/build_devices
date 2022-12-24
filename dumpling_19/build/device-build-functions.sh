@@ -1,5 +1,13 @@
 #!/bin/bash
 
+### Global variables ###
+
+# Tell the build system which img file to use as the recovery img.
+export LOS_RECOVERY_IMG=recovery
+
+### Local variables ###
+
+# Set the vendor for this device.
 VENDOR=oneplus
 
 function build_wos {
