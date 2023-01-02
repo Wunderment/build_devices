@@ -3,7 +3,7 @@
 ### Global variables ###
 
 # Tell the build system which img file to use as the recovery img.
-export LOS_RECOVERY_IMG=recovery
+export LOS_RECOVERY_IMG=boot
 
 ### Local variables ###
 
