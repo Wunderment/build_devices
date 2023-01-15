@@ -17,9 +17,9 @@ function build_wos {
 	RTFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/releasetools.py
 	# For this device we need to add the recovery.img to the flashing script.
 	# First check to see if we've already one it.
-	if ! grep recovery.img $RTFILE > /dev/null; then
-		sed -i 's/^def OTA_InstallEnd(info):/def OTA_InstallEnd(info):\n  AddImage(info, "recovery.img", "\/dev\/block\/bootdevice\/by-name\/recovery")/' $RTFILE
-	fi
+	#if ! grep recovery.img $RTFILE > /dev/null; then
+		#sed -i 's/^def OTA_InstallEnd(info):/def OTA_InstallEnd(info):\n  AddImage(info, "recovery.img", "\/dev\/block\/bootdevice\/by-name\/recovery")/' $RTFILE
+	#fi
 
 	common_build_wos
 }
