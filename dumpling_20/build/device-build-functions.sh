@@ -64,25 +64,9 @@ function sign_wos {
 
 	# Cut the orginal upate script in two at the firmware check.
 	cd ~/devices/$DEVICE/firmware/update/META-INF/com/google/android
-	csplit updater-script /oneplus.verify_modem/
-	mv xx00 updater-script-top
-	mv xx01 updater-temp
+	patch updater-script ~/devices/$DEVICE/build/updater-script.diff
 
-	# Get rid of the firmware check from the second file.
-	tail -n +2 updater-temp > updater-script-bottom
-
-	# Clean up some of our temporary files.
-	rm updater-temp
-	rm updater-script
-
-	# Combine the old and new scripts together.
-	cat updater-script-top ~/devices/$DEVICE/firmware/update/new-updater-script ~/tasks/build/los-recovery-updater-script updater-script-bottom > updater-script
-
-	# Finish cleaning up the temporary files.
-	rm updater-script-top
-	rm updater-script-bottom
-
-	# Now add the new updater script to the release pacakage and get rid of the temporary copy.
+	# Now add the new updater script to the release package and get rid of the temporary copy.
 	cd ~/devices/$DEVICE/firmware/update
 	zip -ur ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip META-INF/com/google/android/updater-script
 	rm ~/devices/$DEVICE/firmware/update/META-INF/com/google/android/updater-script

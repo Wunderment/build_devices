@@ -1,0 +1,13 @@
+--- updater-script	2023-01-14 18:40:21.105262124 -0500
++++ updater-script-patched	2023-01-14 18:41:27.710704544 -0500
+@@ -59,7 +59,10 @@
+ ui_print("Patching vendor image unconditionally...");
+ show_progress(0.100000, 0);
+ block_image_update("/dev/block/bootdevice/by-name/vendor", package_extract_file("vendor.transfer.list"), "vendor.new.dat.br", "vendor.patch.dat") ||
+   abort("E2001: Failed to update vendor image.");
+ package_extract_file("boot.img", "/dev/block/bootdevice/by-name/boot");
++# Update LineageOS recovery.
++ui_print("Patching recovery image unconditionally...");
++package_extract_file("recovery.img", "/dev/block/by-name/recovery");
+ show_progress(0.100000, 10);
+ set_progress(1.000000);
