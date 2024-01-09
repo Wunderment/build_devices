@@ -37,6 +37,12 @@ function build_wos {
 		sed -i 's/^# SELinux/# Vendor Image\BOARD_BUILDS_VENDORIMAGE := true\n\n# SELinux/' $BCCFILE
 	fi
 
+	GFSFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/sepolicy/vendor/genfs_contexts
+	# Since we're building user builds, strip out the debugfs partitions otherwise the build will fail.
+	if ! grep "^#genfscon debugfs" $GFSFILE > /dev/null; then
+		sed -i 's/^genfscon debugfs/#genfscon debugfs/' $GFSFILE
+	fi
+
 	common_build_wos
 }
 
@@ -100,4 +106,3 @@ function sign_wos {
 
 	echo "Signing process complete for $DEVICE!"
 }
-
