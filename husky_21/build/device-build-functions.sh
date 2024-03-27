@@ -75,6 +75,23 @@ function sign_wos {
 	# Create the MD5 checksum file, copy the build prop file and cleanup the target_files zip.
 	checksum_buildprop_cleanup
 
+	if [ -f ~/releases/ota/$LOS_DEVICE/$PKGNAME.zip ]; then
+		echo "Adding boot, dtbo, and vendor_kernel_boot images to recovery zip..."
+		RECOVERYNAME="$HOME/releases/ota/$LOS_DEVICE/WundermentOS-$LOS_BUILD_VERSION-$TODAY-recovery-$LOS_DEVICE"
+
+		unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
+		unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/dtbo.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
+		unzip -j $HOME/releases/signed_files/$LOS_DEVICE/signed-target_files-$LOS_DEVICE-$TODAY.zip IMAGES/vendor_kernel_boot.img -d $HOME/releases/ota/$LOS_DEVICE > /dev/null 2>&1
+
+		zip -j $RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/boot.img
+		zip -j $RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/dtbo.img
+		zip -j $RECOVERYNAME.zip $HOME/releases/ota/$LOS_DEVICE/vendor_kernel_boot.img
+
+		rm $HOME/releases/ota/$LOS_DEVICE/boot.img
+		rm $HOME/releases/ota/$LOS_DEVICE/dtbo.img
+		rm $HOME/releases/ota/$LOS_DEVICE/vendor_kernel_boot.img
+	fi
+
 	# Switch back to the default 2048 bit signing keys.
 	~/tasks/build/switch-keys.sh 2048
 
