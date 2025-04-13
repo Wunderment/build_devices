@@ -34,12 +34,12 @@ function build_wos {
 	# from the device AND the common directory, it also occures in two separate files.
 	BCCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfig-common.mk
 	if grep "testkey_rsa2048.pem" $BCCFILE > /dev/null; then
-		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCCFILE
+		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/android-certs\/releasekey.key/' $BCCFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
 	BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfigLineage.mk
 	if grep "testkey_rsa2048.pem" $BCLFILE > /dev/null; then
-		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/\/home\/WundermentOS\/.android-certs\/releasekey.key/' $BCLFILE
+		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/android-certs\/releasekey.key/' $BCLFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCLFILE
 	fi
 
