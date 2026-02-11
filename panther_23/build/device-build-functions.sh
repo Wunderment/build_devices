@@ -20,9 +20,9 @@ function build_wos {
 	# For this device we need to add the factory partitions to the build system, do that now.
 	# It will also disable strict path enforcement so we can add F-Droid etc to the system partition.
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigLineage.mk
-	# Lineage 23.2 no longer uses the BoardConfigLineage.mk, just the default BoardConfig-common.mk
-	if [ -f $BCFILE ]; then
-		BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfig-common.mk
+	# Lineage 23.2 no longer uses the BoardConfigLineage.mk, just the default BoardConfigCommon.mk
+	if [ ! -f $BCFILE ]; then
+		BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigCommon.mk
 	fi
 	if ! grep "android-certs" $BCFILE > /dev/null; then
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
@@ -30,6 +30,10 @@ function build_wos {
 
 	# We need to remove the flag that disables AVB during boot.
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfigLineage.mk
+	# Lineage 23.2 no longer uses the BoardConfigLineage.mk, just the default BoardConfig-common.mk
+	if [ ! -f $BCFILE ]; then
+		BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfig-common.mk
+	fi
 	if ! grep "#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS" $BCFILE > /dev/null; then
 		sed -i 's/^BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/#BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3/' $BCFILE
 	fi
@@ -42,6 +46,10 @@ function build_wos {
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCCFILE
 	fi
 	BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfigLineage.mk
+	# Lineage 23.2 no longer uses the BoardConfigLineage.mk, just the default BoardConfig-common.mk
+	if [ ! -f $BCLFILE ]; then
+		BCLFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$CHIPSET/BoardConfig-common.mk
+	fi
 	if grep "testkey_rsa2048.pem" $BCLFILE > /dev/null; then
 		sed -i 's/external\/avb\/test\/data\/testkey_rsa2048.pem/android-certs\/releasekey.key/' $BCLFILE
 		sed -i 's/SHA256_RSA2048/SHA256_RSA4096/' $BCLFILE
