@@ -20,6 +20,10 @@ function build_wos {
 	# For this device we need to add the factory partitions to the build system, do that now.
 	# It will also disable strict path enforcement so we can add F-Droid etc to the system partition.
 	BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfigLineage.mk
+	# Lineage 23.2 no longer uses the BoardConfigLineage.mk, just the default BoardConfig-common.mk
+	if [ -f $BCFILE ]; then
+		BCFILE=~/android/lineage-$LOS_BUILD_VERSION/device/$VENDOR/$COMMONDEVICE/BoardConfig-common.mk
+	fi
 	if ! grep "android-certs" $BCFILE > /dev/null; then
 		cat ~/devices/$DEVICE/build/board-config-additions.txt >> $BCFILE
 	fi
